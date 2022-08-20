@@ -21,12 +21,11 @@ class ProductSerializer(serializers.ModelSerializer):
     image = ProductImageSerializer(many=True, read_only=True)
     category = CategorySerializer(read_only=True, many=True)
 
-
     class Meta:
         model = Product
         fields = ['id', 'category', 'name', 'slug', 'description', 'price', 'image']
         read_only_fields = ['id']
-    
+
 
     def get_images(self, obj):
         images = obj.image_set.all()

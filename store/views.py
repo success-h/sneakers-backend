@@ -13,16 +13,24 @@ class ProductFilter(filters.FilterSet):
         model = Product
         fields = ('name',)
 
+
+class CategoryFilter(filters.FilterSet):
+    title = filters.CharFilter(lookup_expr='icontains') 
+    class Meta:
+        model = Category
+        fields = ('name',)
+
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     filterset_class = ProductFilter
-    permisson_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    queryset = Category.objects.all()
+    filterset_class = CategoryFilter
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
         

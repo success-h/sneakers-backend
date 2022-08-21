@@ -5,18 +5,19 @@ from store.models import Product, Category, ProductImage, Category
 
 
 class CategorySerializer(serializers.ModelSerializer):
-
+    
     class Meta:
-        model = Product
-        fields = ['id', 'name', 'slug',]
+        model = Category
+        fields = ['name', 'slug', 'id']
         read_only_fields = ['id']
 
 
-
+    
+    
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ['id', 'product', 'image', 'name']
+        fields = ['id', 'product', 'image', 'name',]
         read_only_fields = ('id',)
 
 
@@ -24,8 +25,10 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    image = ProductImageSerializer(many=True, read_only=True)
-    category = CategorySerializer(read_only=True, many=True)
+    image = ProductImageSerializer(
+        read_only=True,
+        many=True
+    )
 
     class Meta:
         model = Product
@@ -34,23 +37,10 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
     def get_images(self, obj):
-        images = obj.image_set.all()
-        serializers = ProductImageSerializer(images, many=True)
-        return serializers.data
-
-    def slugify(self, value):
-        result = re.sub('[^\w\s-]', '', value)
-        result = re.sub('[-\s]+', '-', result)
-        return result.lower()
-
-    def create(self, validated_data):
-        images = validated_data.pop('image')
-        product = Product.objects.create(**validated_data)
-        slug = self.slugify(product.name)
-        product.slug = slug
-        for image in images:
-            ProductImage.objects.create(product=product, **image)
-        return product
+        print("[img]", obj)
+        img = obj.image_set.all()
+        serializer = ProductImageSerializer(img, many=True)
+        return serializer.data
 
     
 

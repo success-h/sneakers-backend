@@ -31,7 +31,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
     filterset_class = CategoryFilter
-    permission_classes = (IsAuthenticatedOrReadOnly,)
 
         
 class ProductImageViewSet(viewsets.ModelViewSet):

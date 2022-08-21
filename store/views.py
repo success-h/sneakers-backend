@@ -14,7 +14,7 @@ class ProductFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains') 
     class Meta:
         model = Product
-        fields = ('name',)
+        fields = ('name', 'slug')
 
 
 class CategoryFilter(filters.FilterSet):

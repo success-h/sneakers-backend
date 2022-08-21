@@ -25,9 +25,9 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    image = ProductImageSerializer(
+    image = serializers.SerializerMethodField(
         read_only=True,
-        many=True
+        method_name='get_images'
     )
 
     class Meta:
@@ -37,10 +37,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
     def get_images(self, obj):
-        print("[img]", obj)
-        img = obj.image_set.all()
-        serializer = ProductImageSerializer(img, many=True)
-        return serializer.data
-
+        img = ProductImage.objects.filter(product=obj)
+        serializers = ProductImageSerializer(img, many=True)
+        return serializers.data
     
 

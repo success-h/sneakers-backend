@@ -48,7 +48,7 @@ class ProductImage(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='product', on_delete=models.CASCADE, blank=False, null=True)
     name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255,)
+    slug = models.SlugField(max_length=255, null=True, blank=True)
     description = models.TextField()
     price = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -72,3 +72,8 @@ class Product(models.Model):
         if self.name:
             self.slug = re.sub('[^\w\s-]', '', self.name).replace(' ', '-').lower()
         return self.slug
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.generate_slug()
+        super().save(*args, **kwargs)

@@ -16,6 +16,7 @@ class CartSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',),
 
     def get_products(self, obj):
+        print("obj", obj.product.id)
         pd = Product.objects.filter(id=obj.product.id)
         return ProductSerializer(pd, many=True).data
 

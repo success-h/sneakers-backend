@@ -19,9 +19,6 @@ class Cart(models.Model):
     def get_total_price(self):
         return self.quantity * self.product.price
 
-    def get_total_price_after_discount(self):
-        return self.quantity * self.product.price_after_discount
-
     def get_total_discount(self):
         return self.quantity * self.product.discount
 

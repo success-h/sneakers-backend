@@ -6,18 +6,17 @@ from rest_framework import serializers
 
 
 class CartSerializer(serializers.ModelSerializer):
-    product = serializers.SerializerMethodField(
-        read_only=True,
-        method_name='get_products'
+    products =  serializers.SerializerMethodField(
+        'get_products',
+        read_only=True
     )
     class Meta:
         model = Cart
-        fields = ['user', 'product', 'quantity']
-        read_only_fields = ('id',)
+        fields = ['user', 'product', 'quantity', 'products', 'id']
+        read_only_fields = ('id',),
 
     def get_products(self, obj):
-        product = Product.objects.filter(cart=obj)
-        serializers = ProductSerializer(product, many=True)
-        return serializers.data
+        pd = Product.objects.filter(id=obj.product.id)
+        return ProductSerializer(pd, many=True).data
 
-    
+

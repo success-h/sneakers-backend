@@ -17,18 +17,19 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
+    def get_absolute_url(self):
+        return reverse('category_detail', args=[str(self.id)])
+    
     def generate_slug(self):
         if self.name:
             self.slug = re.sub('[^\w\s-]', '', self.name).replace(' ', '-').lower()
         return self.slug
 
-    def get_absolute_url(self):
-        return reverse('category_detail', args=[str(self.id)])
-    
     def save(self, *args, **kwargs):
-        self.generate_slug()
+        if not self.slug:
+            self.generate_slug()
         super().save(*args, **kwargs)
-
 
 
 

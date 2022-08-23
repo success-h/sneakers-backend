@@ -10,14 +10,10 @@ class CartSerializer(serializers.ModelSerializer):
         'get_products',
         read_only=True
     )
-
-    totalprice = serializers.SerializerMethodField(
-        'get_total_price',
-        read_only=True
-    ) 
+    
     class Meta:
         model = Cart
-        fields = ['user', 'product', 'quantity', 'products', 'id', 'totalprice']
+        fields = ['user', 'product', 'products', 'id' ]
         read_only_fields = ('id',),
 
     def get_products(self, obj):
